@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 4.2 作用域链
+    const color = 'red'
+    function getColor() {
+      const color = 'blue'
+      {
+        const color = 'green'
+        return color
+      }
+      return color
+    }
+    console.log(getColor())
+
+    // 4.3.4内存泄漏
+    function setName() {
+      // let name = 'Jack'
+      name = 'Jack'
+    }
+    setName()
+    console.log(name)
+    // 闭包的内存泄漏
+    let outer = function () {
+      let age = 27
+      return function () {
+        return age
+      }
+    }
+    console.log(outer()())
+  </script>
+</body>
+
+</html>

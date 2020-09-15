@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <style>
+    .btn-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 400px;
+    }
+
+    .btn {
+      width: 150px;
+      height: 40px;
+      line-height: 40px;
+      background: lightblue;
+      text-align: center;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    .btn::after {
+      content: '';
+      display: block;
+      width: 0px;
+      height: 0px;
+      border-width: 20px 15px 20px 15px;
+      border-style: solid;
+      position: absolute;
+      top: 0;
+    }
+    .left::after {
+      border-color: lightblue transparent transparent lightblue;
+      right: -30px;
+    }
+    .right::after {
+      border-color: transparent lightblue lightblue transparent;
+      left: -30px;
+    }
+  </style>
+  <div class="btn-wrap">
+    <div class="btn left">左边按钮</div>
+    <div class="btn right">右边按钮</div>
+  </div>
+</body>
+
+</html>
