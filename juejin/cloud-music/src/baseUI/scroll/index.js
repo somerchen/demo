@@ -11,10 +11,42 @@ const ScrollContainer = styled.div`
 
 const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState()
-
-  const ScrollContainerRef = useRef()
+  const scrollContainerRef = useRef()
 
   const { direction, click, refresh, bounceBottom, bounceTop } = props
+  const { pullDown, pullUp, onScroll } = props
+
+  useEffect(() => {
+    const scroll = new BScroll(scrollContainerRef.current, {
+      scrollX: direction === 'horizental',
+      scrollY: direction === 'vertical',
+      probeType: 3,
+      click: click,
+      bounce: {
+        top: bounceTop,
+        bottom: bounceBottom
+      }
+    })
+    setBScroll(scroll)
+    return () => {
+      setBScroll(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!bScroll || !pullUp) return;
+    bScroll.on('scrollEnd', () => {
+      if(bScroll.y <= bScroll.maxScrollY + 100) {
+        pullUp()
+      }
+    })
+    return () => {
+      bScroll.off('scrollEnd')
+    }
+  }, [pullUp, bScroll])
+
+  
+
 })
 
 Scroll.defaultProps = {
