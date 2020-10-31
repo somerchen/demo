@@ -1,5 +1,5 @@
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from 'react'
-import propTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import BScroll from 'better-scroll'
 import styled from 'styled-components'
 
@@ -34,8 +34,19 @@ const Scroll = forwardRef((props, ref) => {
   }, [])
 
   useEffect(() => {
+    if (!bScroll || !onScroll) return;
+    bScroll.on('scroll', scroll => {
+      onScroll(scroll)
+    })
+    return () => {
+      bScroll.off('scroll')
+    }
+  }, [onScroll, bScroll])
+
+  useEffect(() => {
     if (!bScroll || !pullUp) return;
     bScroll.on('scrollEnd', () => {
+      // 判断是否滑动到了底部
       if(bScroll.y <= bScroll.maxScrollY + 100) {
         pullUp()
       }
@@ -45,8 +56,43 @@ const Scroll = forwardRef((props, ref) => {
     }
   }, [pullUp, bScroll])
 
-  
+  useEffect(() => {
+    if (!bScroll || !pullDown) return;
+    bScroll.on('touchEnd', pos => {
+      if (pos.y > 50) {
+        pullDown()
+      }
+    })
+    return () => {
+      bScroll.off('touchEnd')
+    }
+  }, [pullDown, bScroll])
 
+  useEffect(() => {
+    if (refresh && bScroll) {
+      bScroll.refresh()
+    }
+  })
+
+  useImperativeHandle(ref, () => ({
+    refresh() {
+      if (bScroll) {
+        bScroll.refresh()
+        bScroll.scrollTo(0, 0)
+      }
+    },
+    getBScroll() {
+      if (bScroll) {
+        return bScroll
+      }
+    }
+  }))
+
+  return (
+    <ScrollContainer ref={scrollContainerRef}>
+      {props.children}
+    </ScrollContainer>
+  )
 })
 
 Scroll.defaultProps = {
@@ -74,3 +120,5 @@ Scroll.propTypes = {
   bounceTop: PropTypes.bool,// 是否支持向上吸顶
   bounceBottom: PropTypes.bool// 是否支持向下吸底
 }
+
+export default Scroll
