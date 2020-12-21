@@ -8,15 +8,184 @@
 </head>
 
 <body>
+  <!-- CommonJS规范 -->
   <script>
-    new Promise((resolve, reject) => {
-      // setTimeout(() => {
-        // success 
-        resolve({name: 'resolve'})
-      // }, 1000)
-      
-    }).then(res => console.log(res))
-      .catch(err => console.log(err))
+    /**
+     * 
+     */
+
+    // 普通用法 导入 导出
+    // 使用 require() 指定依赖，而使用 exports 对象定义自己的公共API
+    // 调用 require() 意味着模块会原封不动地加载进来
+
+    // 模块赋值给变量非常常见
+    var moduleB = require('./moduleB')
+    // 但赋值给变量不是必需的
+    require('./moduleA')
+
+    module.exports = {
+      stuff: moduleB.doStuff()
+    }
+
+    // 无论一个模块在 require() 被引用多少次，模块永远是单例，模块第一次加载后会被缓存，后续加载会取得缓存的模块
+    console.log('moduleA');
+    require('./moduleA');
+    require('./moduleB'); // "moduleA"
+    require('./moduleA');
+
+    // 在CommonJS中，模块加载是模块系统执行的同步操作
+    console.log('moduleA');
+    if (loadCondition) {
+      require('./moduleA');
+    }
+  </script>
+
+  <!-- 异步模块定义 AMD -->
+  <script>
+    // ID为'moduleA'的模块定义。moduleA依赖moduleB，
+    // moduleB会异步加载
+    define('moduleA', ['moduleB'], function (moduleB) {
+      return {
+        stuff: moduleB.toStuff()
+      }
+    })
+  </script>
+
+
+  <!-- 使用ES6模块 -->
+  <script type="module">
+    // 模块代码
+    /**
+     * 基于CommonJS和AMD的优秀特性
+     * 模块代码只在加载后执行。
+     * 模块只能加载一次。
+     * 模块是单例。
+     * 模块可以定义公共接口，其他模块可以基于这个公共接口观察和交互。
+     * 模块可以请求加载其他模块。
+     * 支持循环依赖。
+     */
+    /**
+     * ES6模块系统增加的一些新行为
+     * ES6模块默认在严格模式下执行。
+     * 模块顶级this的值是undefined（常规脚本中是window）。
+     * 模块中的var声明不会添加到window对象。
+     * ES6模块不共享全局命名空间。
+     * ES6模块是异步加载和执行的。
+     */
+
+    //  模块导出
+    // 允许
+    export ...
+
+    // 不允许
+    if (condition) {
+      export ...
+    }
+
+    // 允许
+    const foo = 'foo';
+    export { foo };
+
+    // 允许
+    export const foo = 'foo';
+
+    // 允许，但应该避免
+    export { foo };
+    const foo = 'foo';
+
+    // 命名导出
+    export const foo = 'foo';
+
+    const foo = 'foo';
+    export { foo };
+
+    // 导出时也可以提供别名
+    const foo = 'foo';
+    export { foo as myFoo };
+
+    // 可以在一个模块中声明多个命名导出
+    export const foo = 'foo';
+    export const bar = 'bar';
+    export const baz = 'baz';
+    export { foo, bar as myBar, baz };
+
+    // 默认导出，每个模块只能有一个默认导出
+    const foo = 'foo';
+    export default foo;
+
+    // ES6模块系统会识别作为别名提供的default关键字
+    // 等同于export default foo;
+    export { foo as default };
+
+    // 命名行内导出
+    export const baz = 'baz';
+    export const foo = 'foo', bar = 'bar';
+    export function foo() { }
+    export function* foo() { }
+    export class Foo { }
+
+    // 命名子句导出
+    export { foo };
+    export { foo, bar };
+    export { foo as myFoo, bar };
+
+    // 默认导出
+    export default 'foo';
+    export default 123;
+    export default /[a-z]*/;
+    export default { foo: 'foo' };
+    export { foo, bar as default };
+    export default foo
+    export default function () { }
+    export default function foo() { }
+    export default function* () { }
+    export default class { }
+
+    // 会导致错误的不同形式：
+    // 行内默认导出中不能出现变量声明
+    export default const foo = 'bar';
+    // 只有标识符可以出现在export子句中
+    export { 123 as foo }
+    // 别名只能在export子句中出现
+    export const foo = 'foo' as myFoo;
+
+    // 模块导入
+    // 允许
+    import ...
+
+    // 不允许
+    if (condition) {
+      import ...
+    }
+
+    // 允许
+    import { foo } from './fooModule.js';
+    console.log(foo); // 'foo'
+
+    // 允许，但应该避免
+    console.log(foo); // 'foo'
+    import { foo } from './fooModule.js';
+
+    const foo = 'foo', bar = 'bar', baz = 'baz';
+    export { foo, bar, baz }
+    import * as Foo from './foo.js';
+
+    console.log(Foo.foo); // foo
+    console.log(Foo.bar); // bar
+    console.log(Foo.baz); // baz
+
+    // 等效
+    import { default as foo } from './foo.js';
+    import foo from './foo.js';
+  </script>
+
+  <!-- 工作者模块 -->
+  <script>
+    // 在实例化时，可以给工作者传入一个指向模块文件的路径，与传入常规脚本文件一样。Worker构造函数接收第二个参数，用于说明传入的是模块文件。
+    // 第二个参数默认为{ type: 'classic' }
+    const scriptWorker = new Worker('scriptWorker.js');
+
+    const moduleWorker = new Worker('moduleWorker.js', { type: 'module' });
   </script>
 </body>
 
