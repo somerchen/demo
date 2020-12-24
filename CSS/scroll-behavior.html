@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    html * {
+      padding: 0;
+      margin: 0;
+    }
+    .scrollToContainer {
+      scroll-behavior: smooth;
+      height: 500px;
+      background: #f1f1f1;
+      overflow: hidden;
+    }
+    article {
+      height: 100%;
+    }
+    #s1 {
+      background: red;
+    }
+    #s2 {
+      background: blue;
+    }
+    #s3 {
+      background: yellow;
+    }
+  </style>
+  <section>
+    <a href="#s1">to s1</a>
+    <a href="#s2">to s2</a>
+    <a href="#s3">to s3</a>
+  </section>
+
+  <section class="scrollToContainer">
+    <article id="s1">
+      <p>this is s1 page</p>
+      <p>this is s1 page</p>
+      <p>this is s1 page</p>
+    </article>
+    <article id="s2">
+      <p>this is s2 page</p>
+      <p>this is s2 page</p>
+      <p>this is s2 page</p>
+    </article>
+    <article id="s3">
+      <p>this is s3 page</p>
+      <p>this is s3 page</p>
+      <p>this is s3 page</p>
+    </article>
+  </section>
+</body>
+</html>
