@@ -2,53 +2,78 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-  <style>
+<style>
     .btn-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 400px;
     }
 
     .btn {
-      width: 150px;
-      height: 40px;
-      line-height: 40px;
-      background: lightblue;
-      text-align: center;
-      margin: 0 20px;
-      position: relative;
+        width: 150px;
+        height: 40px;
+        line-height: 40px;
+        background: lightblue;
+        text-align: center;
+        margin: 0 20px;
+        position: relative;
     }
 
     .btn::after {
-      content: '';
-      display: block;
-      width: 0px;
-      height: 0px;
-      border-width: 20px 15px 20px 15px;
-      border-style: solid;
-      position: absolute;
-      top: 0;
+        content: '';
+        display: block;
+        width: 0px;
+        height: 0px;
+        border-width: 20px 15px 20px 15px;
+        border-style: solid;
+        position: absolute;
+        top: 0;
     }
     .left::after {
-      border-color: lightblue transparent transparent lightblue;
-      right: -30px;
+        border-color: lightblue transparent transparent lightblue;
+        right: -30px;
     }
     .right::after {
-      border-color: transparent lightblue lightblue transparent;
-      left: -30px;
+        border-color: transparent lightblue lightblue transparent;
+        left: -30px;
     }
-  </style>
-  <div class="btn-wrap">
+</style>
+<div class="btn-wrap">
     <div class="btn left">左边按钮</div>
     <div class="btn right">右边按钮</div>
-  </div>
+</div>
+
+<!-- 2021.03.09 新增方法 -->
+<style>
+    .btn-wrap-0309 {
+        display: flex;
+    }
+    .btn-0309 {
+        width: 200px;
+        height: 0;
+        text-align: center;
+        line-height: 100px;
+    }
+    .left-0309 {
+        border-top: 100px solid red;
+        border-right: 30px solid white;
+    }
+    .right-0309 {
+        border-bottom: 100px solid red;
+        border-left: 30px solid white;
+    }
+</style>
+<div class="btn-wrap-0309">
+    <div class="btn-0309 left-0309">左边按钮</div>
+    <div class="btn-0309 right-0309">右边按钮</div>
+</div>
 </body>
 
 </html>
